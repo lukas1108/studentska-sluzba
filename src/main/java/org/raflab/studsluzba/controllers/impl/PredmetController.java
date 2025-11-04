@@ -1,12 +1,10 @@
-package org.raflab.studsluzba.controllers;
+package org.raflab.studsluzba.controllers.impl;
 
 import java.util.List;
 
 import lombok.AllArgsConstructor;
-import org.raflab.studsluzba.model.Predmet;
-import org.raflab.studsluzba.repositories.PredmetRepository;
+import org.raflab.studsluzba.model.entities.Predmet;
 import org.raflab.studsluzba.services.PredmetService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin

@@ -1,11 +1,11 @@
-package org.raflab.studsluzba.controllers;
+package org.raflab.studsluzba.controllers.impl;
 
 import java.util.List;
 
-import org.raflab.studsluzba.model.DrziPredmet;
-import org.raflab.studsluzba.model.Predmet;
-import org.raflab.studsluzba.model.SlusaPredmet;
-import org.raflab.studsluzba.model.StudentIndeks;
+import org.raflab.studsluzba.model.entities.DrziPredmet;
+import org.raflab.studsluzba.model.entities.Predmet;
+import org.raflab.studsluzba.model.entities.SlusaPredmet;
+import org.raflab.studsluzba.model.entities.StudentIndeks;
 import org.raflab.studsluzba.repositories.DrziPredmetRepository;
 import org.raflab.studsluzba.repositories.SlusaPredmetRepository;
 import org.springframework.beans.factory.annotation.Autowired;

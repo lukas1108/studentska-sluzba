@@ -1,14 +1,13 @@
 package org.raflab.studsluzba.services;
 
 import lombok.AllArgsConstructor;
-import org.raflab.studsluzba.model.StudentIndeks;
+import org.raflab.studsluzba.model.entities.StudentIndeks;
 import org.raflab.studsluzba.model.dtos.StudentProfileDTO;
 import org.raflab.studsluzba.model.dtos.StudentWebProfileDTO;
 import org.raflab.studsluzba.repositories.PredmetRepository;
 import org.raflab.studsluzba.repositories.SlusaPredmetRepository;
 import org.raflab.studsluzba.repositories.StudentIndeksRepository;
 import org.raflab.studsluzba.repositories.StudentPodaciRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 @AllArgsConstructor
 @Service

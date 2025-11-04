@@ -1,4 +1,4 @@
-package org.raflab.studsluzba.model;
+package org.raflab.studsluzba.model.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,15 +10,15 @@ import lombok.Data;
 
 @Entity
 @Data
-public class SlusaPredmet {
+public class DrziPredmet {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
-	@ManyToOne	
-	private StudentIndeks studentIndeks;
 	
 	@ManyToOne
-	private DrziPredmet drziPredmet;
-
+	private Nastavnik nastavnik;
+	
+	@ManyToOne
+	private Predmet predmet;
 }

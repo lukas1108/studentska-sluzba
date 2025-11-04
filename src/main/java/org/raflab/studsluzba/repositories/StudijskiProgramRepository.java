@@ -3,7 +3,7 @@ package org.raflab.studsluzba.repositories;
 
 import java.util.List;
 
-import org.raflab.studsluzba.model.StudijskiProgram;
+import org.raflab.studsluzba.model.entities.StudijskiProgram;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;

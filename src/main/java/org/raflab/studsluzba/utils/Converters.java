@@ -2,7 +2,9 @@ package org.raflab.studsluzba.utils;
 
 import org.raflab.studsluzba.controllers.request.*;
 import org.raflab.studsluzba.controllers.response.NastavnikResponse;
-import org.raflab.studsluzba.model.*;
+import org.raflab.studsluzba.model.entities.Nastavnik;
+import org.raflab.studsluzba.model.entities.StudentIndeks;
+import org.raflab.studsluzba.model.entities.StudentPodaci;
 
 import java.util.ArrayList;
 import java.util.List;

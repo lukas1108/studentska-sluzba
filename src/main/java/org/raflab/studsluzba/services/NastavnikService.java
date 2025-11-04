@@ -1,9 +1,8 @@
 package org.raflab.studsluzba.services;
 
 import lombok.AllArgsConstructor;
-import org.raflab.studsluzba.model.Nastavnik;
+import org.raflab.studsluzba.model.entities.Nastavnik;
 import org.raflab.studsluzba.repositories.NastavnikRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

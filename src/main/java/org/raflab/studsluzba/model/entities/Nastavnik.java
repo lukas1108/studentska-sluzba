@@ -1,4 +1,4 @@
-package org.raflab.studsluzba.model;
+package org.raflab.studsluzba.model.entities;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

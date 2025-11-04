@@ -1,6 +1,6 @@
-package org.raflab.studsluzba;
+package org.raflab.studsluzba.app;
 
-import org.raflab.studsluzba.model.*;
+import org.raflab.studsluzba.model.entities.*;
 import org.raflab.studsluzba.repositories.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;

@@ -1,4 +1,4 @@
-package org.raflab.studsluzba.controllers;
+package org.raflab.studsluzba.controllers.impl;
 
 import lombok.AllArgsConstructor;
 import org.raflab.studsluzba.controllers.request.DrziPredmetRequest;

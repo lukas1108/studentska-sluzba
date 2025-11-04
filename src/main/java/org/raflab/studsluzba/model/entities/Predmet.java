@@ -1,4 +1,4 @@
-package org.raflab.studsluzba.model;
+package org.raflab.studsluzba.model.entities;
 
 import javax.persistence.Entity;
 

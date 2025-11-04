@@ -1,11 +1,10 @@
-package org.raflab.studsluzba.controllers;
+package org.raflab.studsluzba.controllers.impl;
 
 import java.util.List;
 
 import lombok.AllArgsConstructor;
-import org.raflab.studsluzba.model.StudijskiProgram;
+import org.raflab.studsluzba.model.entities.StudijskiProgram;
 import org.raflab.studsluzba.repositories.StudijskiProgramRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

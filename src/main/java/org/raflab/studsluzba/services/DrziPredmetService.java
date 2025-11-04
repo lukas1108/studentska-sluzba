@@ -3,13 +3,12 @@ package org.raflab.studsluzba.services;
 import lombok.RequiredArgsConstructor;
 import org.raflab.studsluzba.controllers.request.DrziPredmetNewRequest;
 import org.raflab.studsluzba.controllers.request.DrziPredmetRequest;
-import org.raflab.studsluzba.model.DrziPredmet;
-import org.raflab.studsluzba.model.Nastavnik;
-import org.raflab.studsluzba.model.Predmet;
+import org.raflab.studsluzba.model.entities.DrziPredmet;
+import org.raflab.studsluzba.model.entities.Nastavnik;
+import org.raflab.studsluzba.model.entities.Predmet;
 import org.raflab.studsluzba.repositories.DrziPredmetRepository;
 import org.raflab.studsluzba.repositories.NastavnikRepository;
 import org.raflab.studsluzba.repositories.PredmetRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

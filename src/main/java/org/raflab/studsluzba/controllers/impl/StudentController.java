@@ -1,18 +1,17 @@
-package org.raflab.studsluzba.controllers;
+package org.raflab.studsluzba.controllers.impl;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import lombok.RequiredArgsConstructor;
 import org.raflab.studsluzba.controllers.request.StudentIndeksRequest;
 import org.raflab.studsluzba.controllers.request.StudentPodaciRequest;
 import org.raflab.studsluzba.controllers.response.StudentIndeksResponse;
 import org.raflab.studsluzba.controllers.response.StudentPodaciResponse;
-import org.raflab.studsluzba.model.StudentIndeks;
-import org.raflab.studsluzba.model.StudentPodaci;
-import org.raflab.studsluzba.model.StudijskiProgram;
+import org.raflab.studsluzba.model.entities.StudentIndeks;
+import org.raflab.studsluzba.model.entities.StudentPodaci;
+import org.raflab.studsluzba.model.entities.StudijskiProgram;
 import org.raflab.studsluzba.model.dtos.StudentDTO;
 import org.raflab.studsluzba.model.dtos.StudentProfileDTO;
 import org.raflab.studsluzba.model.dtos.StudentWebProfileDTO;
@@ -24,7 +23,6 @@ import org.raflab.studsluzba.services.StudentProfileService;
 import org.raflab.studsluzba.utils.Converters;
 import org.raflab.studsluzba.utils.EntityMappers;
 import org.raflab.studsluzba.utils.ParseUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

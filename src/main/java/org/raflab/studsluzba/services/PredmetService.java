@@ -1,7 +1,7 @@
 package org.raflab.studsluzba.services;
 
 import lombok.AllArgsConstructor;
-import org.raflab.studsluzba.model.Predmet;
+import org.raflab.studsluzba.model.entities.Predmet;
 import org.raflab.studsluzba.repositories.PredmetRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
