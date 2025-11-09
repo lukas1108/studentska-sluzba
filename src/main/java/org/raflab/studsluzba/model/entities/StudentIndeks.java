@@ -13,18 +13,19 @@ public class StudentIndeks {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 
-	private int broj;
-	private int godina;
-	private String studProgramOznaka;
+    private int broj;
+    @Column(nullable = false) private int godina;
+    @Column(nullable = false) private String studProgramOznaka;
+
 	private String nacinFinansiranja;
 	private boolean aktivan; 
 	private LocalDate vaziOd;
+    private Integer ostvarenoEspb;
 
 	@ManyToOne
 	private StudentPodaci student;
 	
 	@ManyToOne
 	private StudijskiProgram studijskiProgram;   // na koji studijski program je upisan
-	private Integer ostvarenoEspb;
 
 }

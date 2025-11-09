@@ -1,30 +1,41 @@
 package org.raflab.studsluzba.controllers.response;
 
 import lombok.Data;
-
 import java.time.LocalDate;
 
 @Data
 public class StudentPodaciResponse {
+
     private Long id;
-    private String ime;	  // not null
-    private String prezime;  // not null
-    private String srednjeIme;   // not null
+    private String ime;
+    private String prezime;
+    private String srednjeIme;
+
     private String jmbg;
-    private LocalDate datumRodjenja;  // not null
-    private String mestoRodjenja;
-    private String mestoPrebivalista;  // not null
+    private Character pol;
+
+    private LocalDate datumRodjenja;
     private String drzavaRodjenja;
-    private String drzavljanstvo;   // not null
-    private String nacionalnost;   // samoizjasnjavanje, moze bilo sta
-    private Character pol;    // not null
-    private String adresa;  // not null
+    private String mestoRodjenja;
+
+    private String drzavljanstvo;
+    private String nacionalnost;
+
+    private String mestoPrebivalista;
+    private String adresaPrebivalista;
+
     private String brojTelefonaMobilni;
     private String brojTelefonaFiksni;
-    private String email;  // not null
+
+    private String emailFakultetski;
+    private String emailPrivatni;
+
     private String brojLicneKarte;
     private String licnuKartuIzdao;
-    private String mestoStanovanja;
-    private String adresaStanovanja;   // u toku studija
 
+    private String srednjaSkola; // naziv skole
+    private Double uspehSrednjaSkola;
+    private Double uspehPrijemni;
+
+    private String prethodnaUstanova; // naziv ustanove
 }

@@ -10,8 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDate;
 import java.util.*;
 
-@AllArgsConstructor
-@Component // Spring automatski pokrece ovu klasu
+@AllArgsConstructor @Component // Spring automatski pokrece ovu klasu
 public class Seeder implements CommandLineRunner {
     // ima zadatak da popuni bazu pocetnim podacima kada se pokrene program
 
@@ -32,13 +31,13 @@ public class Seeder implements CommandLineRunner {
         List<StudijskiProgram> spList = new ArrayList<>();
         for (int i = 1; i <= 5; i++) {
             StudijskiProgram sp = new StudijskiProgram();
-            sp.setOznaka("SP" + i);
+            sp.setOznaka("SP" + i); // ili RN, RI, SI po potrebi
+            sp.setVrstaStudija("OAS"); // string direktno
             sp.setNaziv("Program " + i);
             sp.setGodinaAkreditacije(2020 + i);
             sp.setZvanje("Zvanje " + i);
             sp.setTrajanjeGodina(4);
             sp.setTrajanjeSemestara(8);
-            sp.setVrstaStudija("OAS");
             sp.setUkupnoEspb(240);
             spList.add(studijskiProgramRepository.save(sp));
         }
@@ -52,6 +51,7 @@ public class Seeder implements CommandLineRunner {
             p.setEspb(6 + i);
             p.setStudProgram(spList.get((i - 1) % spList.size()));
             p.setObavezan(i % 2 == 0);
+            p.setSemestar(i);
             predmetList.add(predmetRepository.save(p));
         }
 
@@ -96,9 +96,13 @@ public class Seeder implements CommandLineRunner {
             s.setDrzavljanstvo("Srbija");
             s.setNacionalnost("Srpska");
             s.setPol(i % 2 == 0 ? 'F' : 'M');
-            s.setAdresa("Adresa " + i);
             s.setBrojTelefonaMobilni("06123456" + i);
-            s.setEmail("student" + i + "@example.com");
+            s.setBrojTelefonaFiksni("01112345" + i);
+            s.setEmailFakultetski("student" + i + "@fakultet.com");
+            s.setEmailPrivatni("student" + i + "@gmail.com");
+            s.setBrojLicneKarte("LP" + i + "2345");
+            s.setLicnuKartuIzdao("MUP Mesto" + i);
+            s.setAdresaPrebivalista("Ulica " + i);
             studentPodaciList.add(studentPodaciRepository.save(s));
         }
 

@@ -22,18 +22,22 @@ public class Nastavnik {
 	 @GeneratedValue(strategy=GenerationType.IDENTITY)
 	 private Long id;
 
-	 private String ime;
-	 private String prezime;
-	 private String srednjeIme;
-	 private String email;
+     @Column(nullable = false) private String ime;
+     @Column(nullable = false) private String prezime;
+     @Column(nullable = false) private String srednjeIme;
+     @Column(nullable = false) private String email;
 	 private String brojTelefona;
 	 private String adresa;
 
 	 @OneToMany(mappedBy = "nastavnik", fetch = FetchType.EAGER)
 	 private Set<NastavnikZvanje> zvanja;
-	 
-	 private LocalDate datumRodjenja;
-	 private Character pol;
-	 private String jmbg;
+
+     @Column(nullable = false) private LocalDate datumRodjenja;
+     @Column(nullable = false) private Character pol;
+     @Column(nullable = false) private String jmbg;
+
+     @ManyToMany
+     private Set<VisokoskolskaUstanova> zavrseneUstanove;
+
 
 }
