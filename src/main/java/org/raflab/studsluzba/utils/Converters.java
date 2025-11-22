@@ -360,5 +360,108 @@ public class Converters {
                 .collect(Collectors.toList());
     }
 
+    public static IspitResponse toIspitResponse(Ispit i) {
+        if (i == null) return null;
+
+        IspitResponse r = new IspitResponse();
+        r.setId(i.getId());
+        r.setDatumVremePocetka(i.getDatumVremePocetka());
+        r.setZakljucen(i.isZakljucen());
+
+        if (i.getIspitniRok() != null) {
+            r.setIspitniRokId(i.getIspitniRok().getId());
+            r.setIspitniRokNaziv(i.getIspitniRok().getNaziv());
+        }
+
+        if (i.getNastavnik() != null) {
+            r.setNastavnikId(i.getNastavnik().getId());
+            r.setNastavnikIme(i.getNastavnik().getIme() + " " + i.getNastavnik().getPrezime());
+        }
+
+        if (i.getPredmet() != null) {
+            r.setPredmetId(i.getPredmet().getId());
+            r.setPredmetNaziv(i.getPredmet().getNaziv());
+        }
+
+        return r;
+    }
+
+    public static List<IspitResponse> toIspitResponseList(Iterable<Ispit> list) {
+        List<IspitResponse> out = new ArrayList<>();
+        list.forEach(i -> out.add(toIspitResponse(i)));
+        return out;
+    }
+
+    public static IspitPrijavaResponse toIspitPrijavaResponse(IspitPrijava p) {
+        if (p == null) return null;
+        IspitPrijavaResponse r = new IspitPrijavaResponse();
+
+        r.setId(p.getId());
+        r.setDatum(p.getDatum());
+
+        if (p.getStudentIndeks() != null) {
+            r.setStudentIndeksId(p.getStudentIndeks().getId());
+            r.setIndeksBroj(p.getStudentIndeks().getBroj());
+            r.setIndeksGodina(p.getStudentIndeks().getGodina());
+            r.setStudProgramOznaka(p.getStudentIndeks().getStudProgramOznaka());
+        }
+
+        if (p.getIspit() != null) {
+            r.setIspitId(p.getIspit().getId());
+            r.setDatumIspita(p.getIspit().getDatumVremePocetka());
+            if (p.getIspit().getPredmet() != null) {
+                r.setPredmetSifra(p.getIspit().getPredmet().getSifra());
+                r.setPredmetNaziv(p.getIspit().getPredmet().getNaziv());
+            }
+        }
+
+        if (p.getIspitIzlazak() != null) {
+            r.setIspitIzlazakId(p.getIspitIzlazak().getId());
+        }
+
+        return r;
+    }
+
+    public static List<IspitPrijavaResponse> toIspitPrijavaResponseList(Iterable<IspitPrijava> items) {
+        List<IspitPrijavaResponse> list = new ArrayList<>();
+        items.forEach(x -> list.add(toIspitPrijavaResponse(x)));
+        return list;
+    }
+
+    // ---- NASTAVNIK ZVANJE ----
+    public static NastavnikZvanje toNastavnikZvanje(NastavnikZvanjeRequest req, Nastavnik nastavnik) {
+        NastavnikZvanje nz = new NastavnikZvanje();
+        nz.setDatumIzbora(req.getDatumIzbora());
+        nz.setNaucnaOblast(req.getNaucnaOblast());
+        nz.setUzaNaucnaOblast(req.getUzaNaucnaOblast());
+        nz.setZvanje(req.getZvanje());
+        nz.setAktivno(req.isAktivno());
+        nz.setNastavnik(nastavnik);
+        return nz;
+    }
+
+    public static NastavnikZvanjeResponse toNastavnikZvanjeResponse(NastavnikZvanje nz) {
+        if (nz == null) return null;
+        NastavnikZvanjeResponse r = new NastavnikZvanjeResponse();
+        r.setId(nz.getId());
+        r.setDatumIzbora(nz.getDatumIzbora());
+        r.setNaucnaOblast(nz.getNaucnaOblast());
+        r.setUzaNaucnaOblast(nz.getUzaNaucnaOblast());
+        r.setZvanje(nz.getZvanje());
+        r.setAktivno(nz.isAktivno());
+        if (nz.getNastavnik() != null) {
+            r.setNastavnikId(nz.getNastavnik().getId());
+            r.setNastavnikIme(nz.getNastavnik().getIme());
+            r.setNastavnikPrezime(nz.getNastavnik().getPrezime());
+        }
+        return r;
+    }
+
+    public static java.util.List<NastavnikZvanjeResponse> toNastavnikZvanjeResponseList(Iterable<NastavnikZvanje> items) {
+        java.util.List<NastavnikZvanjeResponse> list = new java.util.ArrayList<>();
+        items.forEach(x -> list.add(toNastavnikZvanjeResponse(x)));
+        return list;
+    }
+
 
 }
