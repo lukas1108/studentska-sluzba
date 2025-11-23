@@ -14,7 +14,8 @@ public class Predmet {
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 
-    @Column(nullable = false) private String sifra;
+	@Column(nullable = false, unique = true)
+	private String sifra;
     @Column(nullable = false) private String naziv;
 	private String opis;
     @Column(nullable = false) private Integer espb;

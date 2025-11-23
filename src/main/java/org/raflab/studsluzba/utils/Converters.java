@@ -633,4 +633,23 @@ public class Converters {
                 .collect(Collectors.toList());
     }
 
+    // ---- VISOKOSKOLSKA USTANOVA ----
+    public static VisokoskolskaUstanovaResponse toVisokoskolskaUstanovaResponse(VisokoskolskaUstanova v) {
+        if (v == null) return null;
+        VisokoskolskaUstanovaResponse r = new VisokoskolskaUstanovaResponse();
+        r.setId(v.getId());
+        r.setNaziv(v.getNaziv());
+        r.setMesto(v.getMesto());
+        r.setVrsta(v.getVrsta());
+        return r;
+    }
+
+    public static java.util.List<VisokoskolskaUstanovaResponse> toVisokoskolskaUstanovaResponseList(
+            java.util.List<VisokoskolskaUstanova> lista) {
+        java.util.List<VisokoskolskaUstanovaResponse> out = new java.util.ArrayList<>();
+        lista.forEach(x -> out.add(toVisokoskolskaUstanovaResponse(x)));
+        return out;
+    }
+
+
 }
