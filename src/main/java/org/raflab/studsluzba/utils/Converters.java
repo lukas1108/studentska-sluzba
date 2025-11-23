@@ -463,5 +463,66 @@ public class Converters {
         return list;
     }
 
+    // Converters.java (dodatak)
+    public static TokStudijaResponse toTokStudijaResponse(TokStudija ts) {
+        if (ts == null) return null;
+        TokStudijaResponse r = new TokStudijaResponse();
+        r.setId(ts.getId());
+
+        if (ts.getStudentIndeks() != null) {
+            r.setStudentIndeksId(ts.getStudentIndeks().getId());
+            r.setIndeksBroj(ts.getStudentIndeks().getBroj());
+            r.setIndeksGodina(ts.getStudentIndeks().getGodina());
+            r.setStudProgramOznaka(ts.getStudentIndeks().getStudProgramOznaka());
+        }
+
+        if (ts.getUpisi() != null) {
+            r.setUpisGodineIds(ts.getUpisi().stream().map(UpisGodine::getId).collect(Collectors.toSet()));
+        }
+        if (ts.getObnove() != null) {
+            r.setObnovaGodineIds(ts.getObnove().stream().map(ObnovaGodine::getId).collect(Collectors.toSet()));
+        }
+        return r;
+    }
+
+    public static List<TokStudijaResponse> toTokStudijaResponseList(Iterable<TokStudija> items) {
+        List<TokStudijaResponse> list = new ArrayList<>();
+        items.forEach(x -> list.add(toTokStudijaResponse(x)));
+        return list;
+    }
+
+    // Converters.java (dodatak)
+    public static UpisGodineResponse toUpisGodineResponse(UpisGodine u) {
+        if (u == null) return null;
+        UpisGodineResponse r = new UpisGodineResponse();
+        r.setId(u.getId());
+        r.setGodinaStudija(u.getGodinaStudija());
+        r.setDatum(u.getDatum());
+        r.setNapomena(u.getNapomena());
+
+        if (u.getStudentIndeks() != null) {
+            r.setStudentIndeksId(u.getStudentIndeks().getId());
+            r.setIndeksBroj(u.getStudentIndeks().getBroj());
+            r.setIndeksGodina(u.getStudentIndeks().getGodina());
+            r.setStudProgramOznaka(u.getStudentIndeks().getStudProgramOznaka());
+        }
+        if (u.getSkolskaGodina() != null) {
+            r.setSkolskaGodinaId(u.getSkolskaGodina().getId());
+            r.setSkolskaGodinaNaziv(u.getSkolskaGodina().getNaziv());
+        }
+        if (u.getPredmetiKojePrenosi() != null) {
+            r.setPredmetiKojePrenosiIds(
+                    u.getPredmetiKojePrenosi().stream().map(SlusaPredmet::getId).collect(Collectors.toSet())
+            );
+        }
+        return r;
+    }
+
+    public static List<UpisGodineResponse> toUpisGodineResponseList(Iterable<UpisGodine> list) {
+        List<UpisGodineResponse> out = new ArrayList<>();
+        list.forEach(x -> out.add(toUpisGodineResponse(x)));
+        return out;
+    }
+
 
 }

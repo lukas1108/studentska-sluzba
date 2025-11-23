@@ -1,6 +1,7 @@
 package org.raflab.studsluzba.repositories;
 
 import java.util.List;
+import java.util.Set;
 
 import org.raflab.studsluzba.model.entities.SlusaPredmet;
 import org.raflab.studsluzba.model.entities.StudentIndeks;
@@ -30,6 +31,7 @@ public interface SlusaPredmetRepository extends CrudRepository<SlusaPredmet, Lon
 	@Query("select si from StudentIndeks si where not exists "
 			+ "(select sp from SlusaPredmet sp where sp.studentIndeks=si and sp.drziPredmet.id = :idDrziPredmet) ")
 	List<StudentIndeks> getStudentiNeSlusajuDrziPredmet(Long idDrziPredmet);
-	
+
+	List<SlusaPredmet> findByIdIn(Set<Long> ids);
 
 }
