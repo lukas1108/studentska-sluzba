@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.raflab.studsluzba.controllers.response.StudentPodaciResponse;
 import org.raflab.studsluzba.model.entities.StudentIndeks;
 import org.raflab.studsluzba.model.entities.StudentPodaci;
+import org.raflab.studsluzba.repositories.StudentIndeksRepository;
 import org.raflab.studsluzba.repositories.StudentPodaciRepository;
 import org.raflab.studsluzba.utils.EntityMappers;
 import org.springframework.data.domain.Page;
@@ -21,7 +22,9 @@ import java.util.stream.Collectors;
 public class StudentPodaciService {
 
     private final StudentPodaciRepository studentPodaciRepository;
+    private final StudentIndeksRepository studentIndeksRepository; // direktno umesto servisa
     private final EntityMappers entityMappers;
+
 
     @Transactional
     public Optional<StudentPodaci> findById(Long id) {
@@ -72,6 +75,22 @@ public class StudentPodaciService {
         return rez.map(entityMappers::fromStudentPodaciToResponse).orElse(null);
     }
 
+    @Transactional
+    public void deleteStudentPodaci(Long id) {
+        Optional<StudentPodaci> studentOpt = studentPodaciRepository.findById(id);
+        if (studentOpt.isEmpty()) return;
+
+        StudentPodaci student = studentOpt.get();
+
+        // prvo obriši sve indekse studenta direktno preko repository
+        List<StudentIndeks> indeksi = studentIndeksRepository.findStudentIndeksiForStudentPodaciId(id);
+        for (StudentIndeks indeks : indeksi) {
+            studentIndeksRepository.deleteById(indeks.getId());
+        }
+
+        // zatim obriši samog studenta
+        studentPodaciRepository.deleteById(id);
+    }
 
 
 }

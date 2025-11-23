@@ -8,10 +8,10 @@ import java.time.LocalDate;
 @Data
 public class StudentIndeksRequest {
 
-    @NotNull private int godina; //ako npr student mastera upisuje neki program, a godina presla u sledecu???
+    @NotNull private Integer godina; // moze null ako preskače godinu
     @NotNull private String studProgramOznaka;
     private String nacinFinansiranja;
-    private boolean aktivan;
-    private LocalDate vaziOd;   //TODO - da li da setujm trenutni datum
+    private boolean aktivan = true;  // default true
+    private LocalDate vaziOd;         // setovati u servisu ako null
     private Long studentId;
 }

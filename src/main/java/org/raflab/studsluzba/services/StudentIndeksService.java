@@ -24,11 +24,11 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Service
 public class StudentIndeksService {
-    
-    final StudentIndeksRepository studentIndeksRepository;
-    final StudentPodaciService studentPodaciService;
-    final StudijskiProgramiService studijskiProgramiService;
-    final EntityMappers entityMappers;
+
+    private final StudentIndeksRepository studentIndeksRepository;
+    private final StudijskiProgramiService studijskiProgramiService;
+    private final EntityMappers entityMappers;
+
 
     @Transactional(readOnly = true)
     public int findBroj(int godina, String studProgramOznaka) {
@@ -71,7 +71,7 @@ public class StudentIndeksService {
         return studentIndeksRepository.findStudentIndeksiForStudentPodaciId(idStudentPodaci);
     }
 
-    public StudentIndeks addNewStudentPodaci(StudentIndeks studentIndeks) {
+    public StudentIndeks addNewStudentIndeks(StudentIndeks studentIndeks) {
         return studentIndeksRepository.save(studentIndeks);
     }
 
@@ -99,16 +99,21 @@ public class StudentIndeksService {
     }
 
     @Transactional
-    public Long saveStudentIndeks(@RequestBody StudentIndeksRequest request) {
+    public Long saveStudentIndeks(StudentIndeksRequest request) {
+        // konvertuj request u entity
         StudentIndeks studentIndeks = Converters.toStudentIndeks(request);
 
+        // odredi sledeci broj
         int nextBroj = findBroj(request.getGodina(), request.getStudProgramOznaka());
         studentIndeks.setBroj(nextBroj);
 
-        Optional<StudentPodaci> studentPodaci = studentPodaciService.findById(request.getStudentId());
-        if(studentPodaci.isEmpty()) return null;		//TODO - throw error if not exist
-        studentIndeks.setStudent(studentPodaci.get());
+        // validacija postojanja studenta preko repository
+        StudentPodaci student = studentIndeks.getStudent(); // ili setuj iz Converters
+        if (student == null || student.getId() == null) {
+            throw new RuntimeException("StudentPodaci sa ID " + request.getStudentId() + " ne postoji.");
+        }
 
+        // povezi StudijskiProgram
         List<StudijskiProgram> studijskiProgrami = studijskiProgramiService.findByOznaka(request.getStudProgramOznaka());
         if (studijskiProgrami.isEmpty()) {
             throw new RuntimeException("No StudijskiProgram found with oznaka: " + request.getStudProgramOznaka());
@@ -116,14 +121,30 @@ public class StudentIndeksService {
         studentIndeks.setStudijskiProgram(studijskiProgrami.get(0));
 
         try {
-            StudentIndeks savedStudentIndeks = addNewStudentPodaci(studentIndeks);
+            StudentIndeks savedStudentIndeks = addNewStudentIndeks(studentIndeks);
             return savedStudentIndeks.getId();
         } catch (DataIntegrityViolationException e) {
-            // TODO
             throw new RuntimeException("Duplicate entry for broj, godina, and studProgramOznaka", e);
         } catch (Exception e) {
             throw new RuntimeException("Error while saving the StudentIndeks.", e);
         }
     }
+
+
+    @Transactional
+    public void deleteStudentIndeks(Long id) {
+        Optional<StudentIndeks> indeksOpt = studentIndeksRepository.findById(id);
+        if (indeksOpt.isEmpty()) return;
+
+        StudentIndeks indeks = indeksOpt.get();
+
+        // ako ima zavisnih entiteta (npr. ispiti), obriši ih ovde
+        if (indeks.getStudent() != null) {
+            // npr. getStudent().getNeaktivniIndeksi() ili ispiti
+        }
+
+        studentIndeksRepository.deleteById(id);
+    }
+
 
 }

@@ -2,6 +2,7 @@ package org.raflab.studsluzba.services;
 
 import lombok.AllArgsConstructor;
 import org.raflab.studsluzba.controllers.request.PolozenPredmetRequest;
+import org.raflab.studsluzba.controllers.response.PolozenPredmetResponse;
 import org.raflab.studsluzba.model.entities.IspitIzlazak;
 import org.raflab.studsluzba.model.entities.Predmet;
 import org.raflab.studsluzba.model.entities.PolozenPredmet;
@@ -11,6 +12,8 @@ import org.raflab.studsluzba.repositories.PredmetRepository;
 import org.raflab.studsluzba.repositories.PolozenPredmetRepository;
 import org.raflab.studsluzba.repositories.StudentIndeksRepository;
 import org.raflab.studsluzba.utils.Converters;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +27,19 @@ public class PolozenPredmetService {
     private final StudentIndeksRepository studentIndeksRepository;
     private final PredmetRepository predmetRepository;
     private final IspitIzlazakRepository ispitIzlazakRepository;
+
+    public Page<PolozenPredmetResponse> getPolozeniIspiti(Long studentIndeksId, Pageable pageable) {
+        return polozenPredmetRepository
+                .findByStudentIndeksIdAndOcenaIsNotNull(studentIndeksId, pageable)
+                .map(Converters::toPolozenPredmetResponse);  // << ovde promenjeno
+    }
+
+    public Page<PolozenPredmetResponse> getNepolozeniIspiti(Long studentIndeksId, Pageable pageable) {
+        return polozenPredmetRepository
+                .findByStudentIndeksIdAndOcenaIsNull(studentIndeksId, pageable)
+                .map(Converters::toPolozenPredmetResponse);  // << ovde promenjeno
+    }
+
 
     public Long addPolozenPredmet(PolozenPredmetRequest req) {
 

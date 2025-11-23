@@ -14,8 +14,10 @@ import org.raflab.studsluzba.utils.Converters;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @CrossOrigin
 @RestController
@@ -24,6 +26,42 @@ import java.util.Optional;
 public class ObnovaGodineController {
 
     final ObnovaGodineService obnovaGodineService;
+
+    /// - pregled obnovljenih godina za broj indeksa
+    @GetMapping("/student/{studentIndeksId}")
+    public List<ObnovaGodineResponse> getObnoveForStudent(@PathVariable Long studentIndeksId) {
+        return obnovaGodineService.getObnoveForStudentIndeks(studentIndeksId);
+    }
+
+    /// obnova godine za studenta gde je potrebno omogućiti da se, pored nepoloženih,
+    /// izaberu predmeti iz naredne godine. Maksimalni zbir ESPB poena može biti 60.
+    /// Dodaje se nova obnova godine za studenta i predmeti koje sluša, a koji će inicijalno
+    /// biti nepoloženi.
+    @PostMapping("/add-za-studenta")
+    public Long addObnovaZaStudenta(
+            @RequestParam Long studentIndeksId,
+            @RequestParam Long skolskaGodinaId,
+            @RequestParam Integer godinaStudija,
+            @RequestParam(required = false) String napomena,
+            @RequestParam(required = false) Set<Long> predmetiPrethodnaGodinaIds,
+            @RequestParam(required = false) Set<Long> predmetiNarednaGodinaIds,
+            @RequestParam(required = false) LocalDate datum
+    ) {
+        // ako datum nije prosleđen, koristi danasnji datum
+        if (datum == null) {
+            datum = LocalDate.now();
+        }
+        return obnovaGodineService.addObnovaGodineNarednaGodina(
+                studentIndeksId,
+                skolskaGodinaId,
+                predmetiPrethodnaGodinaIds,
+                predmetiNarednaGodinaIds,
+                godinaStudija,
+                napomena,
+                datum
+        );
+    }
+
 
     @PostMapping(path="/add")
     public Long addNewObnova(@RequestBody @Valid ObnovaGodineRequest obnovaRequest) {

@@ -10,17 +10,12 @@ import org.raflab.studsluzba.controllers.response.StudentPodaciResponse;
 import org.raflab.studsluzba.model.dtos.StudentDTO;
 import org.raflab.studsluzba.model.dtos.StudentProfileDTO;
 import org.raflab.studsluzba.model.dtos.StudentWebProfileDTO;
+import org.raflab.studsluzba.model.entities.StudentIndeks;
+import org.raflab.studsluzba.model.entities.StudentPodaci;
 import org.raflab.studsluzba.services.*;
 import org.raflab.studsluzba.utils.Converters;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
 @RestController
@@ -33,7 +28,34 @@ public class StudentController {
 	final StudentIndeksService studentIndeksService;
     final StudentSearchService studentSearchService;
 
-	@PostMapping(path="/add")
+    /// - selekcija studenta (njegovih ličnih podataka) preko broja indeksa
+    @GetMapping(path="/podaci/byIndeks")
+    public StudentPodaciResponse getStudentPodaciByIndeks(@RequestParam String studProgramOznaka,
+                                                          @RequestParam int godina,
+                                                          @RequestParam int broj) {
+        // dohvat StudentIndeks
+        StudentIndeks studentIndeks = studentIndeksService.findStudentIndeks(studProgramOznaka, godina, broj);
+        if (studentIndeks == null) return null; // ili throw Exception
+
+        // dohvat StudentPodaci iz indeksa
+        StudentPodaci studentPodaci = studentIndeks.getStudent();
+        return studentPodaciService.getStudentPodaci(studentPodaci.getId());
+    }
+
+    /// selekcija studenata na osnovu imena i/ili prezimena (može samo ime, ili samo prezime ili oba da se unesu), paginirano
+    @GetMapping(path="/search")  // pretraga po imenu, prezimenu i elementima indeksa
+    public Page<StudentDTO> search(@RequestParam (required = false) String ime,
+                                   @RequestParam (required = false) String prezime,
+                                   @RequestParam (required = false) String studProgram,
+                                   @RequestParam (required = false) Integer godina,
+                                   @RequestParam (required = false) Integer broj,
+                                   @RequestParam(defaultValue = "0") Integer page,
+                                   @RequestParam(defaultValue = "10") Integer size) {
+
+        return studentSearchService.search(ime, prezime, studProgram, godina, broj, page, size);
+    }
+
+    @PostMapping(path="/add")
 	public Long addNewStudentPodaci(@RequestBody StudentPodaciRequest studentPodaci) {
 		return studentPodaciService.addStudentPodaci(Converters.toStudentPodaci(studentPodaci));
 	}
@@ -79,18 +101,6 @@ public class StudentController {
         return studentSearchService.emailSearch(studEmail);
 	}
 
-	@GetMapping(path="/search")  // pretraga po imenu, prezimenu i elementima indeksa
-	public Page<StudentDTO> search(@RequestParam (required = false) String ime,
-								   @RequestParam (required = false) String prezime,
-								   @RequestParam (required = false) String studProgram,
-								   @RequestParam (required = false) Integer godina,
-								   @RequestParam (required = false) Integer broj,
-								   @RequestParam(defaultValue = "0") Integer page,
-								   @RequestParam(defaultValue = "10") Integer size) {
-
-        return studentSearchService.search(ime, prezime, studProgram, godina, broj, page, size);
-	}
-
 	@GetMapping(path="/profile/{studentIndeksId}")
 	public StudentProfileDTO getStudentProfile(@PathVariable  Long studentIndeksId) {
 		return studentProfileService.getStudentProfile(studentIndeksId);
@@ -105,5 +115,10 @@ public class StudentController {
 	public StudentWebProfileDTO getStudentWebProfileForEmail(@RequestParam String studEmail) {
         return studentProfileService.getStudentWebProfileForEmail(studEmail);
 	}
+
+    @DeleteMapping(path="/{id}")
+    public void deleteStudentPodaci(@PathVariable Long id) {
+        studentPodaciService.deleteStudentPodaci(id);
+    }
 
 }

@@ -8,6 +8,7 @@ import org.raflab.studsluzba.model.entities.*;
 import org.raflab.studsluzba.model.entities.IspitIzlazak;
 import org.raflab.studsluzba.controllers.response.IspitniRokResponse;
 import org.raflab.studsluzba.model.entities.IspitniRok;
+import org.raflab.studsluzba.repositories.StudijskiProgramRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -524,5 +525,112 @@ public class Converters {
         return out;
     }
 
+    public static SrednjaSkola toSrednjaSkola(SrednjaSkolaRequest req){
+        SrednjaSkola ss = new SrednjaSkola();
+        ss.setNaziv(req.getNaziv());
+        ss.setMesto(req.getMesto());
+        ss.setVrsta(req.getVrsta());
+        return ss;
+    }
+
+    public static SrednjaSkolaResponse toSrednjaSkolaResponse(SrednjaSkola ss){
+        SrednjaSkolaResponse resp = new SrednjaSkolaResponse();
+        resp.setId(ss.getId());
+        resp.setNaziv(ss.getNaziv());
+        resp.setMesto(ss.getMesto());
+        resp.setVrsta(ss.getVrsta());
+        return resp;
+    }
+
+    public static List<SrednjaSkolaResponse> toSrednjaSkolaResponseList(List<SrednjaSkola> lista){
+        return lista.stream().map(Converters::toSrednjaSkolaResponse).collect(Collectors.toList());
+    }
+
+    public static SkolskaGodina toSkolskaGodina(SkolskaGodinaRequest req){
+        SkolskaGodina sg = new SkolskaGodina();
+        sg.setNaziv(req.getNaziv());
+        sg.setAktivna(req.isAktivna());
+        return sg;
+    }
+
+    public static SkolskaGodinaResponse toSkolskaGodinaResponse(SkolskaGodina sg){
+        SkolskaGodinaResponse resp = new SkolskaGodinaResponse();
+        resp.setId(sg.getId());
+        resp.setNaziv(sg.getNaziv());
+        resp.setAktivna(sg.isAktivna());
+        return resp;
+    }
+
+    public static List<SkolskaGodinaResponse> toSkolskaGodinaResponseList(List<SkolskaGodina> lista){
+        return lista.stream().map(Converters::toSkolskaGodinaResponse).collect(Collectors.toList());
+    }
+
+
+    public static Predmet toPredmet(PredmetRequest req, StudijskiProgramRepository studProgRepo) {
+        Predmet p = new Predmet();
+        p.setSifra(req.getSifra());
+        p.setNaziv(req.getNaziv());
+        p.setOpis(req.getOpis());
+        p.setEspb(req.getEspb());
+        p.setObavezan(req.isObavezan());
+        p.setSemestar(req.getSemestar());
+        p.setFondPredavanja(req.getFondPredavanja());
+        p.setFondVezbi(req.getFondVezbi());
+        if (req.getStudProgramId() != null) {
+            studProgRepo.findById(req.getStudProgramId()).ifPresent(p::setStudProgram);
+        }
+        return p;
+    }
+
+    public static PredmetResponse toPredmetResponse(Predmet p) {
+        if (p == null) return null;
+        PredmetResponse res = new PredmetResponse();
+        res.setId(p.getId());
+        res.setSifra(p.getSifra());
+        res.setNaziv(p.getNaziv());
+        res.setOpis(p.getOpis());
+        res.setEspb(p.getEspb());
+        res.setObavezan(p.isObavezan());
+        res.setSemestar(p.getSemestar());
+        res.setFondPredavanja(p.getFondPredavanja());
+        res.setFondVezbi(p.getFondVezbi());
+
+        // mapiranje celog studijskog programa, ne samo naziva
+        if (p.getStudProgram() != null) {
+            res.setStudijskiProgram(toStudijskiProgramResponse(p.getStudProgram()));
+        }
+        return res;
+    }
+
+
+    public static List<PredmetResponse> toPredmetResponseList(List<Predmet> lista) {
+        return lista.stream()
+                .map(Converters::toPredmetResponse)
+                .collect(Collectors.toList()); // kompatibilno sa Java 11
+    }
+
+
+    public static PredispitnaObaveza toPredispitnaObaveza(PredispitnaObavezaRequest req, Predmet predmet) {
+        PredispitnaObaveza p = new PredispitnaObaveza();
+        p.setVrsta(req.getVrsta());
+        p.setMaxPoena(req.getMaxPoena());
+        p.setPredmet(predmet);
+        return p;
+    }
+
+    public static PredispitnaObavezaResponse toPredispitnaObavezaResponse(PredispitnaObaveza p) {
+        PredispitnaObavezaResponse r = new PredispitnaObavezaResponse();
+        r.setId(p.getId());
+        r.setVrsta(p.getVrsta());
+        r.setMaxPoena(p.getMaxPoena());
+        r.setPredmetId(p.getPredmet() != null ? p.getPredmet().getId() : null);
+        return r;
+    }
+
+    public static List<PredispitnaObavezaResponse> toPredispitnaObavezaResponseList(List<PredispitnaObaveza> lista) {
+        return lista.stream()
+                .map(Converters::toPredispitnaObavezaResponse)
+                .collect(Collectors.toList());
+    }
 
 }
